@@ -1,7 +1,7 @@
 import threading
 from time import perf_counter
 
-MAX_VAL = 5000000000
+MAX_VAL = 5_000_000_000
 NUM_THREADS = 10
 STEP = int(MAX_VAL / NUM_THREADS)
 
@@ -19,7 +19,7 @@ def is_magic_number(x):
         return True
 
     with lock:
-        if i in cache:
+        if x in cache:
             return True
 
     if x % 2:
