@@ -22,12 +22,12 @@ def is_magic_number(x):
         if x in cache:
             return True
 
-    if x % 2:
+    if x & 1:
         # number is odd
         return is_magic_number(x * 3 + 1)
     else:
         # number is even
-        return is_magic_number(x / 2)
+        return is_magic_number(x // 2)
 
 
 def calculate_numbers(start, end):
