@@ -2,6 +2,7 @@ import threading
 from time import perf_counter
 
 MAX_VAL = 5_000_000_000
+# MAX_VAL = 50_000_000
 NUM_THREADS = 10
 STEP = int(MAX_VAL / NUM_THREADS)
 
