@@ -11,7 +11,7 @@ using std::chrono::milliseconds;
 
 const int MAX_TRIES = 100000000;
 unsigned long int lastVerifiedNumber = -1;
-const int UPDATE_INTERVAL = 100000000;
+const int UPDATE_INTERVAL = 1000000000;
 
 bool isMagicNumber(unsigned long x) {
   if (x <= 0) {
@@ -50,7 +50,6 @@ bool isMagicNumber(unsigned long x) {
 
 int main() {
   const unsigned long int END = 5000000000;
-  // const unsigned long int END = 500000000;
   cout << "Calculating from 1 to " << END << "...\n" << endl;
 
   auto start_time = high_resolution_clock::now();
@@ -69,7 +68,7 @@ int main() {
   auto end_time = high_resolution_clock::now();
   auto ms = duration_cast<milliseconds>(end_time - start_time);
 
-  cout << "Completed in " << ms.count() / 1000.0 << " seconds" << endl;
+  cout << "\nCompleted in " << ms.count() / 1000.0 << " seconds" << endl;
   cout << "All numbers from 1 to " << END << " are magic!" << endl;
   return 0;
 }
