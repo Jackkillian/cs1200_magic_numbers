@@ -1,5 +1,7 @@
 #include <atomic>
 #include <chrono>
+#include <iomanip>
+#include <ios>
 #include <iostream>
 #include <thread>
 #include <unordered_map>
@@ -50,20 +52,24 @@ bool isMagicNumber(unsigned long int x) {
   return true;
 }
 
-void workerFunc(unsigned long start, unsigned long end) {
-  for (unsigned long int i = start; i <= end; i++) {
-    if (!isMagicNumber(i)) {
-      cout << i << " is not a magic number." << endl;
+void workerFunc(int threadNumber, unsigned long startOffset,
+                unsigned long step) {
+  for (unsigned long int i = 0; i <= step; i++) {
+    unsigned long number = i + startOffset;
+    if (!isMagicNumber(number)) {
+      cout << number << " is not a magic number." << endl;
       return;
-    } else if (i % 10000000 == 0) {
-      cout << i << " is a magic number! ("
-           << static_cast<float>(i) / end * 100.0 << "\% done)" << endl;
+    } else if (number % 10000000 == 0) {
+      cout << number << " is a magic number! (" << std::fixed
+           << std::setprecision(1) << static_cast<float>(i) / step * 100
+           << "\% done on thread #" << threadNumber << ")" << endl;
     }
   }
 }
 
 int main() {
   const unsigned long int END = 5000000000;
+  // const unsigned long int END = 500000000;
   const int NUM_THREADS = 10;
   const unsigned long int STEP = END / NUM_THREADS;
   thread threads[NUM_THREADS];
@@ -75,10 +81,9 @@ int main() {
   auto start_time = high_resolution_clock::now();
   for (int i = 0; i < NUM_THREADS; i++) {
     unsigned long int startVal = STEP * i + 1;
-    unsigned long int endVal = STEP * (i + 1);
-    cout << "Starting thread #" << i << " for [" << startVal << ", " << endVal
-         << "]" << endl;
-    threads[i] = thread(workerFunc, startVal, endVal);
+    cout << "Starting thread #" << i + 1 << " for [" << startVal << ", "
+         << startVal + STEP - 1 << "]" << endl;
+    threads[i] = thread(workerFunc, i + 1, startVal, STEP);
   }
   cout << endl;
 
@@ -91,7 +96,6 @@ int main() {
 
   cout << "Are all numbers magic? (1=True, 0=False): " << !FOUND_NON_MAGIC
        << endl;
-
   cout << "Completed in " << ms.count() / 1000.0 << " seconds" << endl;
   cout << "All numbers from 1 to " << END << " are magic!" << endl;
   return 0;
