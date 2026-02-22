@@ -26,7 +26,10 @@ bool isMagicNumber(unsigned long x) {
   while (x != 1) {
     if (x & 1) {
       // number is odd, multiply by 3 and add 1
-      x = x * 3 + 1;
+      // also, immediately divide by two: we know the number has to be even now,
+      // so we can perform the next step without doing all of the comparisons
+      // again
+      x = (x * 3 + 1) >> 1;
     } else {
       // number is even, divide by 2
       x = x >> 1;
