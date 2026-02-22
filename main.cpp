@@ -22,7 +22,6 @@ bool isMagicNumber(unsigned long x) {
     return true;
   }
 
-  int tries = 0;
   while (x != 1) {
     if (x & 1) {
       // number is odd, multiply by 3 and add 1
@@ -40,12 +39,6 @@ bool isMagicNumber(unsigned long x) {
       // "magic"
       return true;
     }
-
-    tries++;
-    if (tries >= MAX_TRIES) {
-      cout << "Hit max try limit (" << MAX_TRIES << ")" << endl;
-      return false;
-    }
   }
 
   return true;
@@ -56,6 +49,9 @@ bool calculateAllNumbers(unsigned long int endVal) {
     if (!isMagicNumber(i)) {
       cout << i << " is not a magic number." << endl;
       return false;
+    } else if ((i & 0xFFFFFFF) == 0) {
+      // trigger only in large intervals
+      cout << "Update: " << i << " is magic" << endl;
     }
     lastVerifiedNumber = i;
   }
