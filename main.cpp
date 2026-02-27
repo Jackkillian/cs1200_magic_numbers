@@ -8,10 +8,7 @@ using std::chrono::high_resolution_clock;
 using std::chrono::milliseconds;
 
 const int MAX_TRIES = 100000000;
-const int UPDATE_INTERVAL = 1000000000;
 const unsigned long int END = 5000000000;
-const int NUM_TESTS = 50;
-
 unsigned long int lastVerifiedNumber = -1;
 
 bool isMagicNumber(unsigned long x) {
