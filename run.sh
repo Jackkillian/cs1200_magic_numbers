@@ -1,3 +1,3 @@
 #!/bin/bash
 
-g++ -O3 -o main main.cpp && ./main
+g++ -o main main.cpp && ./main
