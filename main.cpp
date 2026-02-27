@@ -1,8 +1,5 @@
 #include <chrono>
-#include <cmath>
 #include <iostream>
-#include <numeric>
-using std::accumulate;
 using std::cout;
 using std::endl;
 using std::chrono::duration;
