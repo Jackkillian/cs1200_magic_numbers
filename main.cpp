@@ -1,4 +1,5 @@
 #include <chrono>
+#include <cmath>
 #include <iostream>
 #include <numeric>
 using std::accumulate;
@@ -12,7 +13,6 @@ using std::chrono::milliseconds;
 const int MAX_TRIES = 100000000;
 const int UPDATE_INTERVAL = 1000000000;
 const unsigned long int END = 5000000000;
-// const unsigned long int END = 50000;
 const int NUM_TESTS = 50;
 
 unsigned long int lastVerifiedNumber = -1;
@@ -50,55 +50,26 @@ bool calculateAllNumbers(unsigned long int endVal) {
       cout << i << " is not a magic number." << endl;
       return false;
     } else if ((i & 0xFFFFFFF) == 0) {
-      // trigger only in large intervals
-      cout << "Update: " << i << " is magic" << endl;
+      //  trigger only in large intervals
+      cout << "Update: " << i << " is magic." << endl;
     }
     lastVerifiedNumber = i;
   }
   return true;
 }
 
-void benchmark(unsigned long int endVal) {
-  long long times[NUM_TESTS];
-
-  for (int i = 0; i < NUM_TESTS; i++) {
-    lastVerifiedNumber = -1;
-
-    cout << "Running test #" << i + 1 << "..." << endl;
-    auto start_time = high_resolution_clock::now();
-    bool result = calculateAllNumbers(endVal);
-    auto end_time = high_resolution_clock::now();
-    auto ms = duration_cast<milliseconds>(end_time - start_time);
-
-    double seconds = ms.count() / static_cast<double>(1000);
-    long long milli = ms.count();
-    cout << "Completed in " << milli
-         << " milliseconds. Result: " << (result ? "Success" : "Failed") << " ("
-         << seconds << " seconds)" << endl;
-
-    times[i] = milli;
-  }
-
-  long double sum =
-      accumulate(std::begin(times), std::end(times), static_cast<long long>(0));
-  double average = sum / NUM_TESTS;
-
-  cout << endVal << ", " << average << endl;
-}
-
 int main() {
-  // for (unsigned long int i = 0; i <= END; i += 1000000) {
-  //   benchmark(i);
-  // }
-  benchmark(END);
+  cout << "Verifying numbers from 1 to " << END << "..." << endl;
+  auto start_time = high_resolution_clock::now();
+  bool result = calculateAllNumbers(END);
+  auto end_time = high_resolution_clock::now();
+  auto ms = duration_cast<milliseconds>(end_time - start_time);
 
-  // Average execution time after 50 tries for 5,000,000,000: 20.5721 sec
-  // Average execution time after 50 tries for 500,000,000: 2072.44 millisec
-  // Average execution time after 50 tries for 50,000,000: 200.04 millisec
-  // Average execution time after 50 tries for 5,000,000: 20.48 millisec
-  // Average execution time after 50 tries for 500,000: 1.9 millisec
-  // Average execution time after 50 tries for 50,000: 0 millisec (too quick to
-  // be measured)
+  double seconds = ms.count() / static_cast<double>(1000);
+  long long milli = ms.count();
+  cout << "Completed in " << milli
+       << " milliseconds. Result: " << (result ? "Success" : "Failed") << " ("
+       << seconds << " seconds)" << endl;
 
   return 0;
 }
